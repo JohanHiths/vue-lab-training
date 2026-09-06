@@ -2,12 +2,10 @@
 export default {
   data() {
     return {
-    newExercise: '',
-    newExerciseName: '',
-    newExerciseType: '',
-    newExerciseDuration: '',
-    newExerciseDifficulty: '',
-    newExerciseCompleted: '',
+    newName: '',
+    newType: '',
+    newDuration: '',
+    newDifficulty: '',
     
     exercises: [
                 {
@@ -16,7 +14,8 @@ export default {
         type: 'Push workout',
 		    duration: '20',
 	      difficulty: 'easy',
-	      completed:"NO"
+	      completed: false,
+        prio: false
         },
        {
         id: 2,
@@ -24,7 +23,8 @@ export default {
         type: 'Yoga',
         duration: '60',
 	      difficulty: 'medium',
-	      completed:"ON HOLD"
+	      completed: false,
+        prio: false
                     
                 },
                 {
@@ -33,7 +33,8 @@ export default {
         type: 'Running',
 		    duration: '10',
 	            difficulty: 'hard',
-	            completed:"YES"                   
+	            completed: false,
+              prio: false                
                 }
             ],
       nextExerciseId: 4
@@ -47,7 +48,8 @@ export default {
           type: this.newType,
           duration: this.newDuration,
           difficulty: this.newDifficulty,
-          completed: this.newCompleted
+          completed: false,
+          prio: false
         } )
         this.newExercise = ''
       },
@@ -73,22 +75,30 @@ export default {
     <p>Add a Workout:</p>
     <form @submit.prevent="addExercise">
       <input v-model="newName" type="text" placeholder="Workout Name" />
-      <input v-model="newType" type="text" placeholder="Workout Type" />
-      <input v-model="newDuration" type="text" placeholder="Workout Duration" />
-      
-      <select>  
+      <input v-model.number="newDuration" type="number" placeholder="Workout Duration" />
+      <select v-model="newDifficulty">  
         <option value="">Select Difficulty</option>
         <option class="easy" value="easy">Easy</option>
         <option class="medium" value="medium">Medium</option>
         <option class="hard" value="hard">Hard</option>
       </select>
-      <button v-if="newExercise > 0" class="workout-btn">Add Workout</button>
+      <select v-model="newType">
+      <option value="">Select Workout Type</option>
+      <option value="strength">Strength💪</option>
+       <option value="cardio">Cardio🏃</option>
+      <option value="yoga">Yoga🧘🏻‍♀️</option>
+      <option value="mobility">Mobility🤸🏻</option>
+      </select>
+       <p>Workout List</p>
+      <button v-if="newName.length > 0" class="workout-btn">Add Workout</button>
       </form>
         <ul>
     <li v-for="(exercise, index) in exercises" :key="exercise.id" :class="{prio: exercise.prio}">
-        {{exercise.id}} {{exercise.name}}
-        <button @click="deleteExercise(index)">Ta bort</button>
-        <button @click="changeExercise(exercise)">Ändra prio</button>
+        {{exercise.id}} {{exercise.name}} {{ exercise.type }} {{ exercise.duration }} min {{ exercise.difficulty }}
+        <button class="remove-btn" @click="deleteExercise(index)">Remove</button>
+        <button class="change-btn" @click="changeExercise(exercise)">Change</button>
+        <span @click="exercise.completed = !exercise.completed" v-if="exercise.completed">✓ Completed</span>
+        <span @click="exercise.completed = !exercise.completed" v-else>✗ Not completed</span>
     </li>
 </ul>
       </div>
@@ -99,7 +109,7 @@ export default {
 .container{
   display: flex;
   flex-direction: column;
-  height: 500px;
+  min-height: 500px;
   width:500px;
   margin: 0 auto;
   text-align: center;
@@ -108,9 +118,11 @@ export default {
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
+  overflow:visible;
+  
 }
 p{
-  font-size: 1.2rem;
+  font-size: 20px;
   color: #333;
 }
 
@@ -122,7 +134,19 @@ input{
   width: calc(100% - 1rem);
 }
 
-button.workout-btn{
+ .workout-btn{
+  align-self: center;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #252d9c;
+  color: white;
+  cursor: pointer;
+  width:300px;
+}
+
+.change-btn{
   align-self: center;
   margin-top: 1rem;
   padding: 0.5rem 1rem;
@@ -131,7 +155,19 @@ button.workout-btn{
   background-color: #35b835;
   color: white;
   cursor: pointer;
-  width:300px;
+  width:100px;
+}
+.remove-btn{
+  align-self: center;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #d44431;
+  color: white;
+  cursor: pointer;
+  width:100px;
+  margin-right:10px;
 }
 
 select{
@@ -151,5 +187,9 @@ select{
 
 .hard{
     color:red;
+}
+
+li{
+  list-style-type: none;
 }
 </style>

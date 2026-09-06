@@ -9,9 +9,10 @@ import WorkoutForm from './components/WorkOutForm.vue'
   <div class="app">
    
       <h1>MY WORKOUT 💪</h1>
+      
       <WorkoutForm />
       
-      <p>Workout List:</p>
+     
     </div>
 
 </template>
