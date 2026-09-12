@@ -1,0 +1,7 @@
+{
+    "editor.inlineCompletionsAccessibilityVerbose": true,
+    "diffEditor.experimental.useTrueInlineView": true,
+    "editor.inlineSuggest.edits.showCollapsed": true,
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "editor.inlineSuggest.experimental.showOnSuggestConflict": "always"
+}
