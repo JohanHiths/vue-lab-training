@@ -60,6 +60,26 @@ export default {
     };
   },
 
+  created() {
+    const savedWorkouts = localStorage.getItem('workouts')
+
+    if (savedWorkouts) {
+      this.exercises = JSON.parse(savedWorkouts)
+    }
+  },
+
+  watch: {
+    exercises: {
+      deep: true,
+      handler(newExercises) {
+        localStorage.setItem(
+          'workouts',
+          JSON.stringify(newExercises)
+        )
+      }
+    }
+  },
+
   methods: {
    addExercise(exercise) {
   this.exercises.push({
