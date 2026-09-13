@@ -43,6 +43,27 @@ export default {
     return workouts
   }
 },
+
+  created() {
+    const savedWorkouts = localStorage.getItem('workouts')
+
+    if (savedWorkouts) {
+      this.exercises = JSON.parse(savedWorkouts)
+    }
+  },
+
+  watch: {
+    exercises: {
+      deep: true,
+      handler(newExercises) {
+        localStorage.setItem(
+          'workouts',
+          JSON.stringify(newExercises)
+        )
+      }
+    }
+  },
+
   methods: {
     addExercise() {
       this.$emit('add-exercise', {
@@ -72,16 +93,18 @@ export default {
   this.newDuration = exercise.duration
   this.newDifficulty = exercise.difficulty
 },
-editExercise(updatedExercise) {
-  const exercise = this.exercises.find(
-    (exercise) => exercise.id === updatedExercise.id
-  )
+saveEdit() {
+  this.$emit('edit-exercise', {
+    id: this.editingExerciseId,
+    name: this.newName,
+    type: this.newType,
+    duration: this.newDuration,
+    difficulty: this.newDifficulty
+  })
 
-  exercise.name = updatedExercise.name
-  exercise.type = updatedExercise.type
-  exercise.duration = updatedExercise.duration
-  exercise.difficulty = updatedExercise.difficulty
+  this.editingExerciseId = null
 }
+
 }
 
 
@@ -131,13 +154,12 @@ editExercise(updatedExercise) {
         Add your first workout above!
       </p>
     <button
-  v-if="editingExerciseId === null && newName.length > 0"
-  class="workout-btn"
-  @click="addExercise"
->
-  Add Workout
-</button>
-<button
+    v-if="editingExerciseId === null && newName.length > 0"
+    class="workout-btn"
+  >
+    Add Workout
+  </button>
+<button type="button"
   v-if="editingExerciseId !== null"
   class="workout-btn"
   @click="saveEdit"

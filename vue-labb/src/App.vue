@@ -102,7 +102,8 @@ editExercise(updatedExercise) {
   exercise.duration = updatedExercise.duration
   exercise.difficulty = updatedExercise.difficulty
 }
-  }
+  },
+  
 };
 </script>
 <template>
