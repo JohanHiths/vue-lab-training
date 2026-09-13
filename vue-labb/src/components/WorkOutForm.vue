@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       search: '',
+      selectedWeather: 'all',
       editingExerciseId: null,
       newName: '',
       newType: '',
@@ -29,6 +30,12 @@ export default {
     if (this.selectedFilter !== 'all') {
       workouts = workouts.filter((exercise) => {
         return exercise.type === this.selectedFilter
+      })
+    }
+
+     if (this.selectedWeather !== 'all') {
+      workouts = workouts.filter((exercise) => {
+        return exercise.weather === this.selectedWeather
       })
     }
 
@@ -66,13 +73,13 @@ export default {
 
   methods: {
     addExercise() {
-      this.$emit('add-exercise', {
-        name: this.newName,
-        type: this.newType,
-        type: this.swimming,
-        duration: this.newDuration,
-        difficulty: this.newDifficulty
-      })
+     this.$emit('add-exercise', {
+    name: this.newName,
+   type: this.newType,
+   duration: this.newDuration,
+    difficulty: this.newDifficulty,
+    weather: this.newWeather
+    })
     },
     deleteExercise(id) {
         this.exercises.splice(id, 1)
@@ -85,13 +92,14 @@ export default {
       }
     }
   },
-  startEditing(exercise) {
+ startEditing(exercise) {
   this.editingExerciseId = exercise.id
 
   this.newName = exercise.name
   this.newType = exercise.type
   this.newDuration = exercise.duration
   this.newDifficulty = exercise.difficulty
+  this.newWeather = exercise.weather
 },
 saveEdit() {
   this.$emit('edit-exercise', {
@@ -145,9 +153,18 @@ saveEdit() {
 
       </select>
 
+      <select v-model="newWeather">
+  <option value="">Select weather</option>
+  <option value="morning">Morning⛅️</option>
+  <option value="night">Night🌙</option>
+  <option value="raining">Raining☔</option>
+  <option value="sunny">Sunny🌞</option>
+</select>
+
       
 
        <p>Workout List</p>
+    
        
        <p v-if="exercises.length === 0">
         No workouts yet 🏋️
@@ -169,7 +186,7 @@ saveEdit() {
       
       </form>
         <ul>
-    <li
+    <li  :class="{ priority: exercise.prio }"
   v-for="(exercise, index) in filteredExercises"
   :key="exercise.id"
 >
@@ -216,6 +233,11 @@ saveEdit() {
 </template>
 
 <style>
+
+.priority {
+  border: 2px solid orange;
+  transform: scale(1.02);
+}
 
 .workout-search{
   font-size:25px;

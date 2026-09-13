@@ -61,17 +61,18 @@ export default {
   },
 
   methods: {
-    addExercise(exercise) {
-      this.exercises.push({
-        id: this.nextExerciseId++,
-        name: exercise.name,
-        type: exercise.type,
-        duration: exercise.duration,
-        difficulty: exercise.difficulty,
-        completed: false,
-        prio: false
-      });
-    },
+   addExercise(exercise) {
+  this.exercises.push({
+    id: this.nextExerciseId++,
+    name: exercise.name,
+    type: exercise.type,
+    duration: exercise.duration,
+    difficulty: exercise.difficulty,
+    weather: exercise.weather,
+    completed: false,
+    prio: false
+  });
+},
     deleteExercise(id) {
       this.exercises.splice(id, 1);
     },
@@ -130,6 +131,12 @@ editExercise(updatedExercise) {
 .app {
     display:grid;
   grid-template-columns: 1fr 2fr -1fr 2;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 
