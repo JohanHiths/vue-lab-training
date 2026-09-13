@@ -51,25 +51,7 @@ export default {
   }
 },
 
-  created() {
-    const savedWorkouts = localStorage.getItem('workouts')
-
-    if (savedWorkouts) {
-      this.exercises = JSON.parse(savedWorkouts)
-    }
-  },
-
-  watch: {
-    exercises: {
-      deep: true,
-      handler(newExercises) {
-        localStorage.setItem(
-          'workouts',
-          JSON.stringify(newExercises)
-        )
-      }
-    }
-  },
+  
 
   methods: {
     addExercise() {
@@ -244,11 +226,10 @@ saveEdit() {
 }
 
 
-.grid{
-  display:grid;
+.grid {
+  display: grid;
   grid-template-columns: 1fr 1fr;
-
-
+  gap: 2rem;
 }
 
 .workout{
